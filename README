@@ -8,5 +8,5 @@ cd myssh && go build myssh.go && ./myssh -host=192.168.12.48 --user=work -run="c
 
 Scala过于复杂，又一个C++
 Golang
-  1）优势，比较适合我的工作方向和兴趣点
+  1) 静态编译，易于分发，同时开发效率又非常高
   2）GC可能对某些业务是个大问题，但是在我的工作范围里，暂时还是不许要考虑的
