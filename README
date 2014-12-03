@@ -1,6 +1,8 @@
 xiahou*feng@@baidu.com
 xiahou*feng@@yahoo.com
 
+myssh是个简单的程序远程执行命令的程序，小公司可以把所有的密码存在这个文件里，再打成二进制包，分发给OP
+大一点的企业都有跳板机，可以把跳板机的密码记录在里面
 
 Scala过于复杂，又一个C++
 Golang
