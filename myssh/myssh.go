@@ -37,15 +37,19 @@ func exec_cmd(cmd string, wg *sync.WaitGroup) {
     wg.Done() // Need to signal to waitgroup that this goroutine is done
 }
 
-func query_pass(host string) string {
+func query_pass(host string, user string) string {
     pass := make(map[string]string)
-    pass["dev"] = "QyBRKkxywna@$#BB"
-    pass["192.168.119.164"] = pass["dev"]
+    pass["root@dev"] = "QyBRKkxywna@$#BB"
+    pass["root@192.168.119.164"] = pass["dev"]
 
-    pass["192.168.12.48"] = "DBsQl*12.47.sErver"
+    pass["root@192.168.12.48"] = "DBsQl*12.47.sErver"
 
     retval := ""
-    p, ok := pass[host]; 
+
+    host_and_user_segs := []string{user, "@", host}
+    host_and_user := strings.Join(host_and_user_segs, "")
+
+    p, ok := pass[host_and_user]
 
     if ok != false {
         retval = p
@@ -89,13 +93,16 @@ func main() {
     // 第二个参数是默认的
     host := flag.String("host", "dev", "a string")
     cmd := flag.String("run", "w; hostname", "a string")
+    user := flag.String("user", "work", "a string")
 
     flag.Parse()
 
     fmt.Printf("%s\n", *host)
-    pass := query_pass(*host)
+
+    pass := query_pass(*host, *user)
+
     os.Setenv("SSHPASS", pass)
-    command := []string{"sshpass -e ", "ssh ", *host, " ", *cmd}
+    command := []string{"sshpass -e ", "ssh ", *user, "@", *host, " ", *cmd}
     x := strings.Join(command, "")
 
     go exec_cmd(x, wg)
