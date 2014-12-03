@@ -86,13 +86,16 @@ func main() {
     //pass_from_ams := query_pass_from_ams("192.168.119.164")
     //fmt.Println(pass_from_ams)
 
+    // 第二个参数是默认的
     host := flag.String("host", "dev", "a string")
+    cmd := flag.String("run", "w; hostname", "a string")
+
     flag.Parse()
 
     fmt.Printf("%s\n", *host)
     pass := query_pass(*host)
     os.Setenv("SSHPASS", pass)
-    command := []string{"sshpass -e ", "ssh ", *host, " w; hostname"}
+    command := []string{"sshpass -e ", "ssh ", *host, " ", *cmd}
     x := strings.Join(command, "")
 
     go exec_cmd(x, wg)
