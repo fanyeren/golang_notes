@@ -9,58 +9,61 @@
 package main
 
 import (
-    "fmt"
-    "os"
-    "os/exec"
-    "strings"
-    "sync"
-    "flag"
-    //"net/http"
-    //"github.com/astaxie/beego/httplib"
+	"flag"
+	"fmt"
+	"os"
+	"os/exec"
+	"strings"
+	"sync"
+	//"net/http"
+	//"github.com/astaxie/beego/httplib"
 )
 
-
 func exec_cmd(cmd string, wg *sync.WaitGroup) {
-    fmt.Println("command is ", cmd)
+	fmt.Println("command is ", cmd)
 
-    parts := strings.Fields(cmd)
-    head := parts[0]
-    parts = parts[1:len(parts)]
-  
-    out, err := exec.Command(head, parts...).Output()
+	parts := strings.Fields(cmd)
+	head := parts[0]
+	parts = parts[1:len(parts)]
 
-    if err != nil {
-      fmt.Printf("%s", err)
-    }
+	out, err := exec.Command(head, parts...).Output()
 
-    fmt.Printf("%s", out)
-    wg.Done() // Need to signal to waitgroup that this goroutine is done
+	if err != nil {
+		fmt.Printf("%s", err)
+	}
+
+	fmt.Printf("%s", out)
+	wg.Done() // Need to signal to waitgroup that this goroutine is done
 }
 
 func query_pass(host string, user string) string {
-    pass := make(map[string]string)
-    pass["root@dev"] = "QyBRKkxywna@$#BB"
-    pass["root@192.168.119.164"] = pass["dev"]
+	pass := make(map[string]string)
+	pass["root@dev"] = "QyBRKkxywna@$#BB"
+	pass["root@192.168.119.164"] = pass["dev"]
 
-    pass["root@192.168.12.48"] = "DBsQl*12.47.sErver"
+	pass["root@192.168.12.48"] = "DBsQl*12.47.sErver"
+	pass["root@10.5.9.28"] = "XhXkN.c^-lGv"
+	pass["root@10.5.17.68"] = "L9llg*(oH0luUoja"
+	pass["root@192.168.16.4"] = "DhJ_DNs^58v5#16.4Svr"
+	pass["root@10.58.119.200"] = "4spd9ZhzzUhE9$4+"
 
-    retval := ""
+	retval := ""
 
-    host_and_user_segs := []string{user, "@", host}
-    host_and_user := strings.Join(host_and_user_segs, "")
+	host_and_user_segs := []string{user, "@", host}
+	host_and_user := strings.Join(host_and_user_segs, "")
 
-    p, ok := pass[host_and_user]
+	p, ok := pass[host_and_user]
 
-    if ok != false {
-        retval = p
-    } else {
-        fmt.Println("not found!")
-    }
-    return retval
+	if ok != false {
+		retval = p
+	} else {
+		fmt.Println("not found!")
+	}
+	return retval
 }
 
 //func query_pass_from_ams(host string) string {
-//    url_segs := []string{"https://ams.58corp.com/assets/device/get_data?_dc=1417600086833&idtype=&page=1&start=0&limit=25&sort=last_save_time&dir=DESC&query=", host, "&callback=Ext.data.JsonP.callback3"}
+//    url_segs := []string{""}
 //    url := strings.Join(url_segs, "")
 //
 //    cookie1 := &http.Cookie{}
@@ -84,28 +87,28 @@ func query_pass(host string, user string) string {
 
 // 获取密码，打印出来
 func main() {
-    wg := new(sync.WaitGroup)
-    wg.Add(1)
+	wg := new(sync.WaitGroup)
+	wg.Add(1)
 
-    //pass_from_ams := query_pass_from_ams("192.168.119.164")
-    //fmt.Println(pass_from_ams)
+	//pass_from_ams := query_pass_from_ams("192.168.119.164")
+	//fmt.Println(pass_from_ams)
 
-    // 第二个参数是默认的
-    host := flag.String("host", "dev", "a string")
-    cmd := flag.String("run", "w; hostname", "a string")
-    user := flag.String("user", "work", "a string")
+	// 第二个参数是默认的
+	host := flag.String("host", "dev", "a string")
+	cmd := flag.String("run", "w; hostname", "a string")
+	user := flag.String("user", "work", "a string")
 
-    flag.Parse()
+	flag.Parse()
 
-    fmt.Printf("%s\n", *host)
+	fmt.Printf("remote host is %s\n", *host)
 
-    pass := query_pass(*host, *user)
+	pass := query_pass(*host, *user)
 
-    os.Setenv("SSHPASS", pass)
-    command := []string{"sshpass -e ", "ssh ", *user, "@", *host, " ", *cmd}
-    x := strings.Join(command, "")
+	os.Setenv("SSHPASS", pass)
+	command := []string{"sshpass -e ", "ssh ", *user, "@", *host, " ", *cmd}
+	x := strings.Join(command, "")
 
-    go exec_cmd(x, wg)
+	go exec_cmd(x, wg)
 
-    wg.Wait()
+	wg.Wait()
 }
