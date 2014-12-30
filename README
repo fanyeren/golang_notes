@@ -1,5 +1,21 @@
-xiahou*feng@@baidu.com
-xiahou*feng@@yahoo.com
+hashicorp: datacentre
+    https://github.com/hashicorp
+    Terraform is a tool for building, changing, and combining infrastructure safely and efficiently.
+    consul & serf
+
+The key features of Terraform are:
+
+Infrastructure as Code: Infrastructure is described using a high-level configuration syntax. This allows a blueprint of your datacenter to be versioned and treated as you would any other code. Additionally, infrastructure can be shared and re-used.
+
+Execution Plans: Terraform has a "planning" step where it generates an execution plan. The execution plan shows what Terraform will do when you call apply. This lets you avoid any surprises when Terraform manipulates infrastructure.
+
+Resource Graph: Terraform builds a graph of all your resources, and parallelizes the creation and modification of any non-dependent resources. Because of this, Terraform builds infrastructure as efficiently as possible, and operators get insight into dependencies in their infrastructure.
+
+Change Automation: Complex changesets can be applied to your infrastructure with minimal human interaction. With the previously mentioned execution plan and resource graph, you know exactly what Terraform will change and in what order, avoiding many possible human errors.
+
+HasshiCorp把旗下的几个开源产品整合为一个商业产品Atlas，感觉一个好的PaaS就应该具有这些组件。唯一需要改进的是在Deployment阶段，采用Mesos这种声明式的部署方式，可能比Terraform这种命令式部署更有前途。http://t.cn/Rz3Df29
+
+
 
 myssh是个简单的程序远程执行命令的程序，小公司可以把所有的密码存在这个文件里，再打成二进制包，分发给OP和RD
 大一点的企业都有跳板机，可以把跳板机的密码记录在里面
