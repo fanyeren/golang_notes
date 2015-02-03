@@ -37,6 +37,10 @@ func exec_cmd(cmd string, wg *sync.WaitGroup) {
 }
 
 func query_pass(host string, user string) string {
+    http_url = 'uuap.baidu.com'
+    http_usr = 'nilaozi'
+    http_passwd = '_ganniniang_'
+
 	pass := make(map[string]string)
 	pass["root@dev"] = "QyBRKkxywna@$#BB"
 	pass["root@192.168.119.164"] = pass["dev"]
